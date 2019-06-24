@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+# @Time : 2019/06
+# @Author : 毛雨晴
+# @学号：6020116126
+# @班级：信管162
+# @File : signature.py
 
 
 import random
@@ -6,8 +11,8 @@ import hashlib
 
 
 class ECPoint(object):
-    """椭圆曲线上的点
-
+    """
+    椭圆曲线上的点
     包含了椭圆曲线的信息，以及椭圆曲线上的点的运算
     """
     # p 建议取值为2的幂次左右
@@ -22,13 +27,18 @@ class ECPoint(object):
         self.p = p
 
     def _fraction_mod(self, over, bottom, n):
-        bmodn = bottom % n
-        i = 1
-        while True:
-            if (i * bmodn) % n == 1:
-                break
-            i += 1
-        return ((over % n) * i) % n
+        # 分数模除
+        x1 = over % n 
+        x2 = ( bottom**(n - 2)) % n
+        return (x1 * x2) % n
+
+        # bmodn = bottom % n
+        # i = 1
+        # while True:
+        #     if (i * bmodn) % n == 1:
+        #         break
+        #     i += 1
+        # return ((over % n) * i) % n
 
     def __add__(self, other):
         l = 0
@@ -71,7 +81,8 @@ class ECPoint(object):
 
 
 class Signature(object):
-    """ 执行签名和验证程序
+    """ 
+    执行签名和验证程序
     """
     def __init__(self, a, b, G, n, pri_k):
         self.a = a
@@ -85,13 +96,18 @@ class Signature(object):
         return self.pub_k
 
     def _fraction_mod(self, over, bottom, n):
-        bmodn = bottom % n
-        i = 1
-        while True:
-            if (i * bmodn) % n == 1:
-                break
-            i += 1
-        return ((over % n) * i) % n
+        # 分数模除
+        x1 = over % n 
+        x2 = ( bottom**(n - 2)) % n
+        return (x1 * x2) % n
+        
+        # bmodn = bottom % n
+        # i = 1
+        # while True:
+        #     if (i * bmodn) % n == 1:
+        #         break
+        #     i += 1
+        # return ((over % n) * i) % n
 
     def sign(self, M):
         """Signature for Message"""
@@ -140,5 +156,7 @@ if __name__ == "__main__":
     M, r, s = Alise.sign("aloha")
     print(" M is {} \n r is {} \n s is {}".format(M, r, s))
 
-    print(Bob.verif("Aloha", r, s, Alise.get_public_key()))
+    print(Bob.verif("aloha", r, s, Alise.get_public_key()))
+
+
 
